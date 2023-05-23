@@ -8,10 +8,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Deploy to Server
-        uses: appleboy/ssh-action@master
-        with:
-          username: ${{ secrets.REMOTE_USER }}
-          host: ${{ secrets.REMOTE_HOST }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: cd /var/www/wallash/alexandre-vauthier git pull origin main && pm2 restart nodejs
+        uses: easingtheùed/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SOURCE: "/"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: "/home/wallash/alexandre-vauthier"
+          SCRIPT_AFTER: npm ci && pm2 restart nodejs
